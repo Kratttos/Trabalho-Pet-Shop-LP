@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author douglas
  */
-public class PetInserirJDialog extends javax.swing.JDialog {
+public class PetAlterar extends javax.swing.JDialog {
 
     private Pet pet = null;
     
@@ -30,9 +30,24 @@ public class PetInserirJDialog extends javax.swing.JDialog {
     /**
      * Creates new form PetInserirJDialog
      */
-    public PetInserirJDialog(java.awt.Frame parent, boolean modal) {
+    public PetAlterar(java.awt.Frame parent, boolean modal, int cdPet) {
         super(parent, modal);
         initComponents();
+        
+        try{
+            PetDao d = new PetDao();
+            this.pet = d.consultarPorCod(cdPet);
+            
+            jTextField5.setText(pet.getCod()+"");
+            jTextField1.setText(pet.getNome());
+            jTextField2.setText(pet.getDono());
+            jTextField3.setText(pet.getRaca());
+            
+            String dtNascStr = DateParse.dateToString(pet.getDtNasc(), "dd/MM/yyyy");
+            jTextField4.setText(dtNascStr);
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Erro ao consultar Pet ("+cdPet+"): " + e.getMessage(), "Erro ao consultar Pet", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -48,6 +63,9 @@ public class PetInserirJDialog extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -62,13 +80,13 @@ public class PetInserirJDialog extends javax.swing.JDialog {
         jTextField4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Inserção de Pet");
-        setMaximumSize(new java.awt.Dimension(364, 230));
-        setMinimumSize(new java.awt.Dimension(364, 230));
-        setPreferredSize(new java.awt.Dimension(364, 230));
+        setTitle("Alteração de Pet");
+        setMaximumSize(new java.awt.Dimension(364, 270));
+        setMinimumSize(new java.awt.Dimension(364, 270));
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 40, 5));
 
+        jButton1.setBackground(new java.awt.Color(200, 100, 100));
         jButton1.setText("Cancelar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,7 +95,8 @@ public class PetInserirJDialog extends javax.swing.JDialog {
         });
         jPanel1.add(jButton1);
 
-        jButton2.setText("Inserir");
+        jButton2.setBackground(new java.awt.Color(100, 200, 100));
+        jButton2.setText("Alterar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -88,6 +107,20 @@ public class PetInserirJDialog extends javax.swing.JDialog {
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 8));
+
+        jPanel7.setPreferredSize(new java.awt.Dimension(315, 25));
+        jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Id.:");
+        jLabel5.setPreferredSize(new java.awt.Dimension(75, 16));
+        jPanel7.add(jLabel5);
+
+        jTextField5.setEditable(false);
+        jTextField5.setColumns(4);
+        jPanel7.add(jTextField5);
+
+        jPanel2.add(jPanel7);
 
         jPanel3.setPreferredSize(new java.awt.Dimension(315, 25));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
@@ -147,12 +180,15 @@ public class PetInserirJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.pet = null;
+                
         this.setVisible(false);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Pet p = new Pet();
+        p.setCod ( Integer.parseInt(jTextField5.getText()) );
         p.setNome(jTextField1.getText());
         p.setDono(jTextField2.getText());
         p.setRaca(jTextField3.getText());
@@ -168,17 +204,16 @@ public class PetInserirJDialog extends javax.swing.JDialog {
         
         PetDao dao = new PetDao ();
         try {
-            int codPet = dao.inserir(p);
-            p.setCod(codPet);
+            dao.alterar(p);
             
             this.pet = p;
             
-            JOptionPane.showMessageDialog(this, "Pet inserido com sucesso.");
+            JOptionPane.showMessageDialog(this, "Pet alterado com sucesso.");
             
             this.setVisible(false);
             this.dispose();
         } catch (DaoException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao inserir pet :- " +e.getMessage(), "Erro de inclusão", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao alterar pet :- " +e.getMessage(), "Erro de alteração", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -199,20 +234,27 @@ public class PetInserirJDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PetInserirJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PetAlterar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PetInserirJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PetAlterar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PetInserirJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PetAlterar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PetInserirJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PetAlterar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PetInserirJDialog dialog = new PetInserirJDialog(new javax.swing.JFrame(), true);
+                PetAlterar dialog = new PetAlterar(new javax.swing.JFrame(), true, 1);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -231,15 +273,18 @@ public class PetInserirJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

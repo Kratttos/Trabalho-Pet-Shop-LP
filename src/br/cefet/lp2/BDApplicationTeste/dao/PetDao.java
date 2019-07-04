@@ -34,6 +34,8 @@ public class PetDao extends Dao {
      * @param Pet p
      * @throws DaoException
      */
+    
+    public List lista = new ArrayList<Pet>();
     public int inserir(Pet p) throws DaoException {
         int ret = 0;
 
