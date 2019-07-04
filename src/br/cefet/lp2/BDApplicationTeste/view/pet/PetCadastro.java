@@ -12,11 +12,8 @@ import br.cefet.lp2.BDApplicationTeste.util.DateParse;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -32,16 +29,14 @@ public class PetCadastro extends javax.swing.JFrame {
 
         PetDao dao = new PetDao();
 
-        List<Pet> pList = new LinkedList<>();
-
         try {
-            pList = dao.consultarTodos();
+            PetDao.lista = dao.consultarTodos();
 
         } catch (DaoException e) {
             JOptionPane.showMessageDialog(this, "Erro ao consultar todos os pets: " + e.getMessage());
         }
 
-        preencherJTable(pList);
+        preencherJTable(PetDao.lista);
 
     }
 
@@ -56,7 +51,7 @@ public class PetCadastro extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        bInserir = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -71,13 +66,13 @@ public class PetCadastro extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("+");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bInserir.setText("+");
+        bInserir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bInserirActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton1);
+        jPanel3.add(bInserir);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.EAST);
 
@@ -141,18 +136,17 @@ public class PetCadastro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInserirActionPerformed
         PetInserir pInsertJDialog = new PetInserir(this, true);
         pInsertJDialog.setVisible(true);
         
         Pet p = pInsertJDialog.getPet();
         if (p != null){
-            List<Pet> pList = new ArrayList<Pet>();
-            pList.add(p);
-            
-            preencherJTable(pList);
+  
+            PetDao.lista.add(p);
+            preencherJTable(PetDao.lista);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bInserirActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if (evt.getKeyCode() == 10) {
@@ -267,7 +261,7 @@ public class PetCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bInserir;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
