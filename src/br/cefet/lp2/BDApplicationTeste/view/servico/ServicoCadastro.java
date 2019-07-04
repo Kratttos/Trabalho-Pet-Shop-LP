@@ -34,13 +34,13 @@ public class ServicoCadastro extends javax.swing.JFrame {
         List<Servico> pList = new LinkedList<>();
 
         try {
-            pList = dao.consultarTodos();
+            ServicoDao.lista = (ArrayList<Servico>) dao.consultarTodos();
 
         } catch (DaoException e) {
             JOptionPane.showMessageDialog(this, "Erro ao consultar todos os Servicos: " + e.getMessage());
         }
 
-        preencherJTable(pList);
+        preencherJTable(ServicoDao.lista);
 
     }
 
@@ -146,10 +146,9 @@ public class ServicoCadastro extends javax.swing.JFrame {
         
         Servico p = pInsertJDialog.getServico();
         if (p != null){
-            List<Servico> pList = new ArrayList<Servico>();
-            pList.add(p);
             
-            preencherJTable(pList);
+            ServicoDao.lista.add(p);
+            preencherJTable(ServicoDao.lista);
         }
         
     }//GEN-LAST:event_bInserirActionPerformed

@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class ServicoDao extends Dao {
     
+    public static ArrayList<Servico> lista = new ArrayList();
+    
     public int inserir(Servico p) throws DaoException {
         int ret = 0;
 
@@ -120,12 +122,10 @@ public class ServicoDao extends Dao {
             conn = getConnection();
             String sql
                     = " select * from Servico "
-                    + " where NOME like ? "
-                    + "    or DONO like ? ";
+                    + " where Descricao like ? ";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, nome + "%");
-            ps.setString(2, nome + "%");
             rs = ps.executeQuery();
 
             while (rs.next()) {
