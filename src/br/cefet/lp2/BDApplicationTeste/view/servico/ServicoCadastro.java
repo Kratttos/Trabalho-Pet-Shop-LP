@@ -8,7 +8,6 @@ package br.cefet.lp2.BDApplicationTeste.view.servico;
 import br.cefet.lp2.BDApplicationTeste.dao.DaoException;
 import br.cefet.lp2.BDApplicationTeste.dao.ServicoDao;
 import br.cefet.lp2.BDApplicationTeste.entidade.Servico;
-import br.cefet.lp2.BDApplicationTeste.util.DateParse;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

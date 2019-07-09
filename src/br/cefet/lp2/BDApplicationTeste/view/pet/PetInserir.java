@@ -11,8 +11,6 @@ import br.cefet.lp2.BDApplicationTeste.entidade.Pet;
 import br.cefet.lp2.BDApplicationTeste.util.DateParse;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,6 +31,7 @@ public class PetInserir extends javax.swing.JDialog {
     public PetInserir(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
     }
 
     /**

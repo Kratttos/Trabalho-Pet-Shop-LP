@@ -28,6 +28,7 @@ public class ServicoInserir extends javax.swing.JDialog {
     public ServicoInserir(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Inserção de Serviços");
     }
 
     /**

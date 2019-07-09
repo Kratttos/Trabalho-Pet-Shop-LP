@@ -156,11 +156,7 @@ public class ServicoDao extends Dao {
         try {
             conn = getConnection();
 
-            String sql
-                    = " update Servico "
-                    + " set Descricao = ?, "
-                    + "     Valor = ?, "
-                    + " where CdServico = ? ";
+            String sql = " update Servico set Descricao = ? , Valor = ? where CdServico = ? ";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, p.getDescricao());
