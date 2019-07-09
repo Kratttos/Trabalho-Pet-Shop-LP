@@ -19,7 +19,7 @@ public class Dao {
         Connection conn = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/bdapli", "bd", "123");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/bdapli", "root", "");
         } catch (SQLException ex) {
             throw new Exception(ex.getMessage(), ex);
         }
